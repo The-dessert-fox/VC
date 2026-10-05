@@ -6,20 +6,17 @@ alto = 800
 
 #Crea una imagen con tres planos
 color_img = np.zeros((alto,ancho,3), dtype = np.uint8)
+
+#white image
 color_img[0:800,0:800]=(255,255,255)
 
-#Línea roja vertical de grosor 3
-"""What I need to do is lines and filled rectangles, that's it
-But to make it actually cool I need to do random rectangles
-I start white, put random rectangles... Would need to keep a list of all
-the rectangles, the lines ecc, it takes to long
-I just have to make one actually, so I can do it manually I guess
-"""
-#Rectángulo relleno
+#Making the colored rectangles
 cv2.rectangle(color_img,(0,0),(100,500),(255,255,0),-1)#yellow
 cv2.rectangle(color_img,(300,300),(400,500),(255,0,0),-1)#red
 cv2.rectangle(color_img,(500,300),(700,600),(0,255,0),-1)#green
 cv2.rectangle(color_img,(200,100),(750,300),(0,0,255),-1)#blue
+
+#Adding th lines
 cv2.line(color_img,(100,300),(ancho,300),(0,0,0),10)
 cv2.line(color_img,(300,300),(300,alto),(0,0,0),10)
 cv2.line(color_img,(500,300),(500,alto),(0,0,0),10)
