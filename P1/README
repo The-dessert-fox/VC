@@ -2,7 +2,9 @@ Tarea 1: Ajedrez
 
 My implementation: I simply started with a black 800x800 board and used a nested loop to go line by line, column by column for a total of 64 times to paint the right boxes. 
 
-Ai implementation: Didn't use matplotlib but the idea to paint the boxes is the same. As usual Ai builds a function and a main for even the smallest projects.
+Ai implementation: 
+my prompt: In Ajedrez_ai.py make a 800x800 px chess board and show it on screen
+Ai didn't use matplotlib but the idea to paint the boxes is the same. As usual Ai builds a function and a main for even the smallest projects.
 
 Tarea 2: Mondrian
 
