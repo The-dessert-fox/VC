@@ -12,7 +12,7 @@ I initially thought of making a generator that uses a pnrg to make infinite rand
 While I could do that, it was not exactly what was requsted and it would have taken way more time, that's why I settled for a "hand-made" mondrian.
 What I did was put together some random rectangles with a polarized rgb like mondrian paintings, then I put together all the lines.
 To make it better I would add a colored rectangle in the bottom left part.
-![Mondrian_Image](Figure_1.png)
+![Mondrian_Image](./Figure_1.png)
 
 Tarea 3:Circulos
 
