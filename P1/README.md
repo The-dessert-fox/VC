@@ -26,6 +26,7 @@ Tarea 4:Propuesta de Pop Art
 Using the webcam input it could be possible to make a pop art looking image in the famous Marilyn Monroe from Andy Warhol style. Many versions could be made as in the original by joining together a selected range of pixel and changing them, and possibly an area around them, with some kind of bright color. 
 
 
-
+Sources used:
 [Marilyn Monroe - Andy Warhol](https://www.moma.org/collection/works/61240)
+
 [Pop_Art](https://en.wikipedia.org/wiki/Pop_art)
