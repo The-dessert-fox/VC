@@ -7,7 +7,6 @@ while(True):
     # fotograma a fotograma
     ret, frame = vid.read()
     height,wide,rgb=frame.shape
-    # Hay nuevo fotograma
     darkest=frame.max()
     clearest=frame.min()
     xd,yd=0,0
