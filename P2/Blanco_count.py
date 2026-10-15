@@ -17,7 +17,6 @@ col_counts = cv2.reduce(canny, 1, cv2.REDUCE_SUM, dtype=cv2.CV_32SC1)
 plt.axis("off")
 plt.title("Canny with whites density")
 
-
 maxfil=0
 arr=col_counts
 #Gets the most white row

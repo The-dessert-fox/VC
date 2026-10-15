@@ -26,8 +26,8 @@ def highwhite(imagenUmbralizada):
     maxfil=maxfil/ (255) #max white px in a row
     print("max number of white pixels on row:",maxfil)
     print("rows with very much white(>=0.9*maxfil):",count)
-
-    #cols thing
+    
+    #cols img
     col_counts = cv2.reduce(imagenUmbralizada, 0, cv2.REDUCE_SUM, dtype=cv2.CV_32SC1)
 
     #finding the whitest column and the columns closest to it by 0.9*maxfil white pixels
@@ -80,7 +80,10 @@ sobel8 = cv2.convertScaleAbs(sobel)
 valorUmbral = 100 
 _, imagenUmbralizada = cv2.threshold(sobel8, valorUmbral, 255, cv2.THRESH_BINARY)
 #Lines on lightest rows and columns
+print("Sobel stats:")
 imagenUmbralizadaSobel=highwhite(imagenUmbralizada)
+print("Canny stats:")
+
 imagenUmbralizadaCanny=highwhite(cv2.Canny(gris, 100, 255))
 
 #Shows the modified images in detail
