@@ -1,54 +1,26 @@
-C## Práctica 3. Detección y reconocimiento de formas
+Tarea1-MoneyRecon
 
-### Contenidos
+The first tarea objective was to create a program able to count the value of the coins(euros) shown in the camera capture. 
+The first file was a ![test file](./MoneyFind.py) used to understand if the idea worked on paper. The ![second file](./MoneyFind2.py) contains the concept of the first one but it's polished and contain the camera implementation.
+The idea is simple, the user has to first select two coins in the image, the one euro and the cent. This will allow the program to calibrate itself on the camera environment. After the coins are selected, informations are extracted to regulate parameters relatives to color and size. The color is picked first and the size is secondary, a difference is also made between high value coins(1 and 2 euro) and the rest since the high value possess a different color ring.
+The coins are classified in 3 classes: ring, golden and bronze. From there the rest is decided based on the size. A weakness of this model could be made in the color selection, for which weird lighting could create false assignement to classes. Another weakness could be the circle lookup that doesn't look for slightly sideways circles that would give problems to the color classification(while keeping mostly corrct the size classification of minor importance).
+A possible solution could be doing the circle and then use an ellipse or similar geometric form to get the correct segmentation of not frontal coin, the process to classify the values could then be the same, even if harder because of light reflection and hard to classify coin rings
 
-[Aspectos cubiertos](#31-aspectos-cubiertos)  
-[Entrega](#32-entrega)
+Tarea2-Plastic
+Two files compose this homework: ![The actual program](./plastic.py) and ![The library](./plasticlib.py).
+Here the objective was to use the three images to identify the differences between the 3 types of plastic to then be able to recognise them in a image. 
+The means used to find differences were brightness and roundness of the elements, color was also taken into account but was then seen as not useful compared to the other after looking at the images. The images were analyzed to look for what kind of thing to look. The ![first image](./FRA.png) has light element with sharp borders, the ![second image](./PEL.png) has all round element, mostly light colored and the only dark are very round. The third image is with sharp borders and dark coloring.
+My idea was to put dark elements in the third category, the light round or dark but round in the second and sharp in the first category. An algorithm is used to decide what brightness and roundness threshold use to decide if something is "round" or "not round" and "bright" or "not bright".
+The algorithm manage to find threshold to divide correctly the elements with 27/29 correctness which seems good enough and yet for the real case the correctness is way lower. The cause of this it's the background which differ a lot from the images the algorithm was built on. It is in fact in range (230,230,230) instead of (125,125,125) range. 
+A possible solution would be to just set the algorithm to do a difference between the elemnt and the sorrounding background, this would solve the light problem as in the test image the values are changing. This makes the algorthm good only in same lightning and uniformity images as in the 3 that were used for parameter adjustement.
 
-### 3.1. Aspectos cubiertos
+The training results with ajusted parameters:
+![FRA](figure_1.png)
+![PEL](figure_2.png)
+![TAR](figure_3.png)
 
-En esta práctica el objetivo es adquirir nociones para extraer información geométrica de objetos presentes en una imagen, con el fin de caracterizarlos y posteriormente ser capaz de identificarlos de forma automática en categorías. Si bien se reitera en el apartado de la entgera, **no se plantea** para la resolución de las tareas, la utilización de **modelos de aprendizaje profundo**. El cuaderno de la práctica, *VC_P3.ipynb*, contiene diversos ejemplos mostrando variantes para la detección de objetos presentes en la imagen, como paso previo a su caracterización geométrica. En este sentido, se plantea el uso del umbralizado y la detección de contornos. Para el caso concreto de monedas, se considera también la utilización de la transformada de Hough para la localización de formas circulares.
+The result on the confusion matrix:
+![Confusion matrix](figure_4.png)
 
-
-Si bien no es necesario instalar paquetes adicionales para las primeras celdas del cuaderno, de cara a poder obtener la matriz de confusión, es requisito instalar en el *environment* los paquetes *scikit-learn* y *seaborn* para disponer de utilidades para el cálculo de [métricas](https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall?hl=es-419). Con *pip* sería algo como:
-
-```
-pip install scikit-learn seaborn
-```
-
-### 3.2. Entrega
-
-Para la entrega de esta práctica, son **dos las tareas planteadas**. Para ninguna de ellas deben integrar modelos de **aprendizaje profundo**:
-
-- En la **primera tarea**, el reto o tarea consiste en determinar la cantidad de dinero y monedas presentes en la imagen captada en vivo con la webcam. Una extensión válida sería la presencia de objetos que no sean monedas en la imagen analizada.
-
-- En la **segunda tarea**, deben desarrollar un procedimiento que extraiga partículas de una imagen de test, y las clasifique en tres clases posibles. Deben tener claro que la imagen de test no puede utilizarse para ajustar el procedimiento, para ello cuentan con las imágenes de entrenamiento. En este sentido, además de la imagen de test *MPs_test.jpg* con su correspondiente archivo de anotaciones *MPs_test_bbs.csv*, se proporcionan de cara al entrenamiento, imágenes de tres clases de objetos recogidos en playas canarias: fragmentos plásticos, *pellets* y alquitrán. Para cada categoría se proporciona una imagen completa y una subimagen de la misma. Las dos primeras categorías se consideran microplásticos cuando miden menos de 5mm, mientras que la tercera es muy habitual encontrarlas en playas canarias. Observar que dado que cada imagen contiene muestras de una única categoría, a efectos prácticos disponen de un conjunto de datos anotado. La tarea propuesta consiste en hacer uso de las imágenes de entrenamiento proporcionadas, extraer de forma automatizada las partículas e identificar patrones en sus características geométricas y de apariencia o entrenar un clasificador con ellas, que puedan permitir la clasificación de las partículas en la imagen de test. El resultado obtenido en la imagen de test, debe mostrarse por medio las métricas mostradas en el cuaderno, incluyendo la matriz de confusión, donde se comparan las anotaciones con las predicciones.
-
-![Confusión](MatrizConfu.png)  
-*Ejemplo de matriz de confusión*
-
-A la hora de considerar posibles características geométricas, como punto de partida para la extracción de descriptores de las partículas, se proporciona enlace al trabajo [SMACC: A System for Microplastics Automatic Counting and Classification](https://doi.org/10.1109/ACCESS.2020.2970498) en el que se adoptan algunas propiedades geométricas para dicho fin. De forma resumida, las características geométricas utilizadas en dicho trabajo fueron:
-
-- Área en píxeles (A)
-- Perímetro en píxeles (P)
-- Compacidad (relación del cuadrado del perímetro con el área C=P^2/A)
-- Relación del área de la partícula con el área del contenedor que la contiene
-- Relación del ancho y el alto del contenedor
-- Relación entre los ejes de la elipse ajustada
-- Definido el centroide, relación entre las distancias menor y mayor al contorno
-
-En relación a la segmentación de las partículas, una probable primera observación es que la aplicación del umbralizado para separarlas del fondo, es delicada. Preprocesamiento como el ecualizado del histograma, suavizar la imagen de entrada o reducir su tamaño, o aplicar heurísticas basadas en el tamaño mínimo y máximo de los contornos localizados, y la distancia mínima entre ellos, pueden ayudar a filtrar falsas detecciones, pero a pesar de ello, será un desafío obtener una separación perfecta para todas las imágenes con la misma estrategia. Añadir, que la imagen de fragmentos contiene unas 80 partículas, la de *pellets* unas 55 y la de alquitrán unas 54.
-
-<!--
-![Contornos](Output.jpg)  
-*Ejemplo ilustrativo contornos detectados en la imagen de fragmentos*
-
-Si quieren ir más allá, sugerir explorar técnicas de segmentación recientes y potentes como [Segment anything o SAM](https://segment-anything.com) o [OneFormer](https://github.com/SHI-Labs/OneFormer), y extensiones como , [SAM 2](https://github.com/facebookresearch/segment-anything-2), [FastSAM](https://github.com/CASIA-IVA-Lab/FastSAM) o [Count anything](https://github.com/ylqi/Count-Anything). No duden en compartir otras alternativas que descubran.-->
-
-Como en las prácticas previas, la entrega se realizará a través del campus virtual, remitiendo un enlace al repositorio **github**, donde se alojará el **cuaderno o cuadernos** de resolución de las tareas, además de su correspondiente **README** describiendo el proceso adoptado para resolver cada tarea, detallar la asistencia recibida por herramientas de IA, integrando de imágenes ilustrativas, además de las métricas obtenidas y matriz de confusión de la segunda tarea.
-
-<!---Momentos en trabajo de Nayar sobre Binary images https://cave.cs.columbia.edu/Statics/monographs/Binary%20Images%20FPCV-1-3.pdf -->
-
-
-***
-Bajo licencia de Creative Commons Reconocimiento - No Comercial 4.0 Internacional
+Result shown on image:
+![Confusion matrix](figure_5.png)

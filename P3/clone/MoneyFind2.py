@@ -4,22 +4,19 @@ import matplotlib.pyplot as plt
 import csv
 
 def getPoint(action, x, y, flags, *userdata):
-  # Referencing global variables
     global coin
-  # Mark the top left corner when left mouse button is pressed
-    # When left mouse button is released, mark bottom right corner
     if action == cv2.EVENT_LBUTTONUP:
         coin = (x,y)   
 
-def region_rgb(img,contour, r_min, r_max): #thx chatgpt
+def region_rgb(img,contour, r_min, r_max): 
     """Median RGB color of the ring between r_min*R and r_max*R (R = coin radius)."""
     (cx, cy), r = cv2.minEnclosingCircle(contour)
     h, w = img.shape[:2]
     yy, xx = np.ogrid[:h, :w]
     dist = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
     mask = (dist >= r_min * r) & (dist <= r_max * r)
-    bgr = np.median(img[mask], axis=0).astype(float)
-    return bgr
+    rgb = np.median(img[mask], axis=0).astype(float)
+    return rgb
 def euro_colors(img, euro_contour):
     center = region_rgb(img, euro_contour, 0.0, 0.5)
     ring   = region_rgb(img, euro_contour, 0.80, 0.93)
@@ -40,7 +37,6 @@ valueeurorel=[207/424,(276/424),354/424,306/424,388/424,461/424,1,520/424]
     
 vid = cv2.VideoCapture(0)
 
-#Marca de inicio
 unset=1
 while(True):      
     # fotograma a fotograma
@@ -48,7 +44,6 @@ while(True):
     img=frame
     img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     cv2.namedWindow("Window")
-# highgui function called when mouse events occur
     if unset:
         cv2.setMouseCallback("Window", getPoint)
         k=0
@@ -67,9 +62,8 @@ while(True):
         cv2.destroyWindow("Window")
     if ret:
             cv2.imshow('video', frame)
-    umbral = 200 # Prueba varios comenzando en 130
-# Umbralizado binario invertido, dado que por defecto se asume objetos en blanco
-
+    
+    umbral = 200 
     img_gris = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     th1,img_th1 = cv2.threshold(img_gris,umbral,255,cv2.THRESH_BINARY_INV)
 
@@ -78,7 +72,7 @@ while(True):
         cv2.CHAIN_APPROX_SIMPLE)
     for c in contornos2:
         area=cv2.contourArea(c)
-        #Área del contorno
+        #small area is noise
         if(area>20):
             if cv2.pointPolygonTest(c, OneEuro, False) >= 0:
                 areamax = area
@@ -140,62 +134,6 @@ while(True):
             print(area,moneychart[index],inside)
             moneyvalue+=moneychart[index]
     print(f"{moneyvalue} euros")
-        #Copia fotograma actual para la diferencia en el siguiente forograma
     # Detenemos pulsado ESC
     if cv2.waitKey(20) == 27:
         break
-  
-# Libera el objeto de captura
-vid.release()
-# Destruye ventanas
-cv2.destroyAllWindows()
-exit()
-#need to add camera support and that's it, I'm done
-
-img = cv2.imread('Monedas.jpg') 
-print(img.shape)
-#Recordar que OpenCV lee las imágenes en BGR, por lo que convertimos para visualizr a RGB
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-umbral = 200 # Prueba varios comenzando en 130
-# Umbralizado binario invertido, dado que por defecto se asume objetos en blanco
-
-img_gris = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-th1,img_th1 = cv2.threshold(img_gris,umbral,255,cv2.THRESH_BINARY_INV)
-coin=(0,0)
-
-contornos2, hierarchy2 = cv2.findContours(img_th1, 
-    cv2.RETR_EXTERNAL , 
-    cv2.CHAIN_APPROX_SIMPLE)
-cv2.drawContours(img_rgb, contornos2, -1, (0,255,0), 3)
-plt.subplot(132)
-plt.axis("off")
-plt.imshow(img_rgb) 
-plt.show()
-
-
-
-#setting values to start, so it works with different light types
-
-temp = img.copy()
-
-
-    #Área mínima (útil filtrar en ocasiones)
-    
-    #Perímetro del contorno
-
-
-
-Cent=coin
-both=0
-valuescentrel=[1,(276/207),354/207,306/207,388/207,461/207,424/207,520/207]
-valueeurorel=[207/424,(276/424),354/424,306/424,388/424,461/424,1,520/424]
-
-
-    
-
-
-
-
-
-

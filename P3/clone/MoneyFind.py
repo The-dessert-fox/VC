@@ -8,9 +8,7 @@ img = cv2.imread('Monedas.jpg')
 print(img.shape)
 #Recordar que OpenCV lee las imágenes en BGR, por lo que convertimos para visualizr a RGB
 img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-umbral = 200 # Prueba varios comenzando en 130
-# Umbralizado binario invertido, dado que por defecto se asume objetos en blanco
-
+umbral = 200 
 img_gris = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 th1,img_th1 = cv2.threshold(img_gris,umbral,255,cv2.THRESH_BINARY_INV)
@@ -26,23 +24,14 @@ plt.imshow(img_rgb)
 plt.show()
 
 
-
-#setting values to start, so it works with different light types
-
 def getPoint(action, x, y, flags, *userdata):
-  # Referencing global variables
     global coin
-  # Mark the top left corner when left mouse button is pressed
-    # When left mouse button is released, mark bottom right corner
+
     if action == cv2.EVENT_LBUTTONUP:
         coin = (x,y)   
 
 temp = img.copy()
 
-
-    #Área mínima (útil filtrar en ocasiones)
-    
-    #Perímetro del contorno
 cv2.namedWindow("Window")
 # highgui function called when mouse events occur
 cv2.setMouseCallback("Window", getPoint)
@@ -71,7 +60,7 @@ both=0
 valuescentrel=[1,(276/207),354/207,306/207,388/207,461/207,424/207,520/207]
 valueeurorel=[207/424,(276/424),354/424,306/424,388/424,461/424,1,520/424]
 
-def region_rgb(img,contour, r_min, r_max): #thx chatgpt
+def region_rgb(img,contour, r_min, r_max): #ring color
     """Median RGB color of the ring between r_min*R and r_max*R (R = coin radius)."""
     (cx, cy), r = cv2.minEnclosingCircle(contour)
     h, w = img.shape[:2]
@@ -89,7 +78,7 @@ def cent_colors(img,contour):
 
 for c in contornos2:
     area=cv2.contourArea(c)
-    #Área del contorno
+    #noise cancellation
     if(area>20):
         if cv2.pointPolygonTest(c, OneEuro, False) >= 0:
             areamax = area

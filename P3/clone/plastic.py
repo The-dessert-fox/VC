@@ -273,6 +273,7 @@ correct = 0
 wrong = 0
 skipped = 0
 
+
 with open(csv_file, newline="") as file:
     reader = csv.DictReader(file)
 
@@ -355,7 +356,7 @@ from sklearn.metrics import (
 )
 import seaborn as sns
 
-
+#confusion matrix and datas
 if y_true:
     print(f"Accuracy: {accuracy_score(y_true, y_pred):.3f}")
     print(f"Weighted precision: {precision_score(y_true, y_pred, average='weighted', zero_division=0):.3f}")
@@ -383,18 +384,3 @@ plt.axis("off")
 plt.show()
 exit()
             
-chiaro0scuro=0.5 #we could binary search too
-#optional, presnt previous images and have guess belonging in a for cycle to fine tune automatically the
-#right values to search for
-
-
-#da quello che ho visto: nero spigoloso va in TAR, tondo nero va in PEL, così come tondi in generale
-# in FRA vanno chiari spigolosi
-
-
-#open img and decide the belonging
-
-
-
-#confusion matrix
-

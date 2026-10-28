@@ -30,7 +30,7 @@ def getMediumColor(imgrgb,contourns):
             plt.axis("off")
 
             plt.show()"""
-            print(mean_color)
+            #print(mean_color)
             count+=1
     return mean_color/count
 def getMediumRough(imgth,contourns):
@@ -46,7 +46,6 @@ def getMediumRough(imgth,contourns):
             mean+=circularity
             count+=1
 
-            # Draw the rectangle
     mean=mean/count
     return mean
 def getRough(c):
